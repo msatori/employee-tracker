@@ -1,0 +1,24 @@
+{
+  "name": "employee-tracker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "migrate": "sqlite2 db/employees.db < db/schema.sql",
+    "seed": "sqlite2 db/employees.db < db/seeds.sql",
+    "db": "sqlite2 db/employees.db",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/msatori/employee-tracker.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/msatori/employee-tracker/issues"
+  },
+  "homepage": "https://github.com/msatori/employee-tracker#readme"
+}
