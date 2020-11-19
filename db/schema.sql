@@ -5,3 +5,13 @@ CREATE TABLE employees (
     role_id 
     manager_id 
 )
+
+CREATE TABLE role (
+    title VARCHAR(30),
+    salary 
+    department_id
+)
+
+CREATE TABLE department (
+    
+)
