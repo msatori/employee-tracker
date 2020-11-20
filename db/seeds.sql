@@ -1,1 +1,6 @@
-INSERT INTO TABLE employees
+INSERT INTO department (name)
+VALUES 
+    ('Sales'),
+    ('Engineering'),
+    ('Legal'),
+    ('Finance');

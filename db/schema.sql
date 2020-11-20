@@ -1,17 +1,13 @@
-CREATE TABLE employees (
-    id INTEGER AUTO_INCREMENT NOT NULL,
-    first_name VARCHAR(30) NOT NULL,
-    last_name VARCHAR(30) NOT NULL,
-    --foreign key for role id
-    --foreign key for manager id
-)
+ DROP DATABASE IF EXISTS employees;
+ CREATE DATABASE employees;
 
--- CREATE TABLE role (
---     title VARCHAR(30),
---     salary 
---     fk for department_id
--- )
+ USE employees;
+
 
  CREATE TABLE department (
-   name VARCHAR(30)
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(30) UNIQUE NOT NULL 
  );
+
+
+
