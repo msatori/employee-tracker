@@ -1,1 +1,1 @@
-check 
+INSERT INTO TABLE employees

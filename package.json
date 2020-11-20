@@ -20,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/msatori/employee-tracker/issues"
   },
-  "homepage": "https://github.com/msatori/employee-tracker#readme"
+  "homepage": "https://github.com/msatori/employee-tracker#readme",
+  "dependencies": {
+    "mysql2": "^2.2.5"
+  }
 }
