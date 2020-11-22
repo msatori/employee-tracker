@@ -8,7 +8,6 @@ const connection = require('./db/connection');
 
 connection.query('SELECT * FROM department', function(err, res) {
     console.log(res);
-
 });
 
 
