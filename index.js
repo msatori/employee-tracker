@@ -6,7 +6,7 @@ const connection = require('./db/connection');
 //const path = require('path');
 
 
-connection.query('SELECT * FROM department', function(err, res) {
+connection.query('SELECT * FROM employee', function(err, res) {
     console.log(res);
 });
 
