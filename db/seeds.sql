@@ -35,4 +35,3 @@ VALUES
   ('Benjamin', 'Wyatt', 7, null),
   ('Andy', 'Dwyer', 8, 7),
   ('Perd', 'Hapley', 8, 7);
-
