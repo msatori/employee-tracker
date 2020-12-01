@@ -5,11 +5,11 @@ class dataBase {
     constructor(connection) {
         this.connection = connection;
     }
-}
+
 
 
 //find all employees - join w/ roles, salaries, departments, and managers
-function findAllEmployees () {
+findAllEmployees () {
     return this.connection.promise().query(
         `SELECT employee.id, employee.first_name, roles.title, department.name, role.salary, CONCAT(manager.first_name, '', manager.last_name) AS manager
          FROM employee
@@ -19,18 +19,43 @@ function findAllEmployees () {
     );
 }
 
-
-
-
 //create a new employee
-
+makeNewEmployee(employee) {
+    return this.connection.promise().query(
+        `UPDATE TABLE employee SET ?;`,
+         employee
+    );
+}
 //remove an employee using their id
+deleteEmployee(employeeId) {
+    return this.connection.promise().query(
+        `DELETE FROM employee WHERE id=?;`,
+        employeeId
+    );
+}
 
 //update the employees role
+updateEmployeeRole(employeeId, roleId) {
+    return this.connection.promise().query(
+        `UPDATE TABLE employee SET role where id = ?;`,
+        [roleId, employeeId]
+    );
+}
 
 //update employees manager
+updateEmployeeManager(employeeId, managerId) {
+    return this.connection.promise().query(
+        `UPDATE employee SET manager_id WHERE id =?;`,
+        [managerId, employeeId]
+    );
+}
 
 //find all roles - join w/ depts
+findAllRoles() {
+   return this.connection.promise().query(
+       `SELECT role.id, role.title, deparment.name AS department, role.salary FROM role LEFT JOIN department from role.department_id = department.id;`
+   )
+}
 
 //create new role
 
@@ -46,7 +71,7 @@ function findAllEmployees () {
 
 //find all employees by manager - join w/ depts and roles
 
-
+}
 
 connection.query('SELECT * FROM department', function(err, res) {
     console.log(res);
