@@ -1,5 +1,6 @@
 const db = require('./db');
 const inquirer = require('inquirer');
+const { updateEmployeeManager } = require('./db');
 require('console.table'); 
 
 const inqMessages = {
@@ -40,7 +41,29 @@ const init = function() {
             case viewAllEmployees: findAllEmployees();
             break;
 
-            
+            case viewAllDepartments: viewEmployeeDepartments();
+            break;
+
+            case viewByManager: viewEmployeeByManager();
+            break;
+
+            case addNewEmployee: createNewEmployee();
+            break;
+
+            case updateEmployee: updateCureentEmployee();
+            break;
+
+            case updateRole: updateEmployeeRole();
+            break;
+
+            case updateManager: updateEmployeeManager();
+            break;
+
+            case viewAllRoles: viewAllAvailableRoles();
+            break;
+
+            default: exitApp();
+
         }
     })
     .catch(error => {
@@ -52,4 +75,15 @@ const init = function() {
     })
 };
 
-init();
+function findAllEmployees() {
+    db.findAllEmployees()
+    .then(([rows]) => {
+        let employees = rows;
+        console.table(employees)
+    })
+    .then(() => init());
+}
+
+function viewEmployeeDepartment() {
+
+}
