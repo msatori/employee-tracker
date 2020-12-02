@@ -85,5 +85,5 @@ function findAllEmployees() {
 }
 
 function viewEmployeeDepartment() {
-
+    db.findAllDepartments
 }
