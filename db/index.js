@@ -18,7 +18,7 @@ class dataBase {
     }
 
     //create a new employee
-    createNewEmployee(employee) {
+    makeNewEmployee(employee) {
         return this.connection.promise().query(
             `UPDATE TABLE employee SET ?;`,
             employee
@@ -99,11 +99,12 @@ class dataBase {
     findEmployeeByDepartment(departmentId) {
         return this.connection.promise().query(
             `SELECT employee.id, employee.first_name, department.name 
-            AS department, role.title
-            FROM employee 
-            LEFT JOIN role on employee.role_id 
-            LEFT JOIN department on role.department
-     `
+     AS department, role.title
+     FROM employee 
+     LEFT JOIN role on employee.role_id 
+     LEFT JOIN department on role.department
+     `,
+            departmentId
         );
     }
 
@@ -111,12 +112,12 @@ class dataBase {
     findAllEmployeesByManager(managerId) {
         return this.connection.promise().query(
             `SELECT employee.id, employee.first_name, department.name
-             AS department, role.title 
-             FROM employee
-             LEFT JOIN role on role.id = employee.role_id
-             LEFT JOIN department 
-             ON department.id = role.department_id 
-             WHERE manager_id = ?;`,
+         AS department, role.title 
+         FROM employee
+         LEFT JOIN role on role.id = employee.role_id
+         LEFT JOIN department 
+         ON department.id = role.department_id 
+         WHERE manager_id = ?;`,
             managerId
         );
     }

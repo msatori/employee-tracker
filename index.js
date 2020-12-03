@@ -1,7 +1,7 @@
 const db = require('./db');
 const inquirer = require('inquirer');
 const { updateEmployeeManager } = require('./db');
-require('console.table'); 
+require('console.table');
 
 const inqMessages = {
     viewAllEmployees: "View all Employees",
@@ -16,9 +16,9 @@ const inqMessages = {
 };
 
 
-const init = function() {
+const init = function () {
     inquirer.
-        prompt ([
+        prompt([
             {
                 type: "list",
                 name: "mainQ",
@@ -34,56 +34,99 @@ const init = function() {
                     inqMessages.viewAllRoles,
                     inqMessages.exit
                 ]
-        }
-    ])
-    .then(answers => {
-        switch(answers) {
-            case viewAllEmployees: findAllEmployees();
-            break;
+            }
+        ])
+        .then(answers => {
+            switch (answers) {
+                case viewAllEmployees: findAllEmployees();
+                    break;
 
-            case viewAllDepartments: viewEmployeeDepartments();
-            break;
+                case viewAllDepartments: viewEmployeeDepartments();
+                    break;
 
-            case viewByManager: viewEmployeeByManager();
-            break;
+                case viewByManager: viewEmployeeByManager();
+                    break;
 
-            case addNewEmployee: createNewEmployee();
-            break;
+                case addNewEmployee: createNewEmployee();
+                    break;
 
-            case updateEmployee: updateCureentEmployee();
-            break;
+                case updateEmployee: updateCureentEmployee();
+                    break;
 
-            case updateRole: updateEmployeeRole();
-            break;
+                case updateRole: updateEmployeeRole();
+                    break;
 
-            case updateManager: updateEmployeeManager();
-            break;
+                case updateManager: updateEmployeeManager();
+                    break;
 
-            case viewAllRoles: viewAllAvailableRoles();
-            break;
+                case viewAllRoles: viewAllAvailableRoles();
+                    break;
 
-            default: exitApp();
+                default: exitApp();
 
-        }
-    })
-    .catch(error => {
-        if(error.isTtyError) {
-            console.log(error)
-        } else {
-            if (err) throw new err
-        }
-    })
+            }
+        })
+        .catch(error => {
+            if (error.isTtyError) {
+                console.log(error)
+            } else {
+                if (err) throw new err
+            }
+        })
 };
 
+//create a function to find every employee
 function findAllEmployees() {
+    //call db query
     db.findAllEmployees()
-    .then(([rows]) => {
-        let employees = rows;
-        console.table(employees)
-    })
-    .then(() => init());
+        //place info
+        .then(([rows]) => {
+            let employees = rows;
+            console.table(employees)
+        })
+        .then(() => init());
 }
 
-function viewEmployeeDepartment() {
-    db.findAllDepartments
+//function to view employees via departments
+function viewEmployeeDepartments() {
+    //call db query
+    db.findAllDepartments()
+        .then(([row]) => {
+            let depts = rows
+            const allDepartments = depts.map(({ id, name }) => ({
+                name: name,
+                value: id
+            }));
+
+            //create inquirer prompts for where to go from here
+            inquirer.
+                prompt([
+                    {
+                        type: 'list',
+                        name: 'allDepartments',
+                        choices: allDepartments
+                    }
+                ])
+
+                .then(res => db.findAllDepartments(res.departmentId))
+                .then(([rows]) => {
+                    let employeesByDept = rows;
+                    console.log("/n");
+                    console.table(employeesByDept)
+                })
+                .then(() => init())
+
+        });
+}
+
+//view employees according to their managers 
+function viewEmployeeByManager() {
+    db.viewAllEmployees()
+    .then(([rows]) => {
+        let managers = rows;
+        const allManagers = managers.map(({ id, first_name, last_name, }) => ({
+            name: `${first_name, last_name}`,
+            value: id
+        }))
+    })
 }
