@@ -91,7 +91,7 @@ function findAllEmployees() {
 function viewEmployeeDepartments() {
     //call db query
     db.findAllDepartments()
-        .then(([row]) => {
+        .then(([rows]) => {
             let depts = rows
             const allDepartments = depts.map(({ id, name }) => ({
                 name: name,
