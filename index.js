@@ -1,6 +1,5 @@
-const db = require('./db');
+const db = require('./db/index');
 const inquirer = require('inquirer');
-const { updateEmployeeManager } = require('./db');
 require('console.table');
 
 const inqMessages = {
@@ -15,6 +14,11 @@ const inqMessages = {
     exit: "Exit"
 };
 
+
+
+function loadApp() {
+    init();
+}
 
 const init = function () {
     inquirer.
@@ -38,31 +42,33 @@ const init = function () {
         ])
         .then(answers => {
             switch (answers) {
-                case viewAllEmployees: findAllEmployees();
+                case inqMessages.viewAllEmployees: findAllEmployees();
                     break;
 
-                case viewAllDepartments: viewEmployeeDepartments();
+                case inqMessages.viewAllDepartments: viewEmployeeDepartments();
                     break;
 
-                case viewByManager: viewEmployeeByManager();
+                case inqMessages.viewByManager: viewEmployeeByManager();
                     break;
 
-                case addNewEmployee: createNewEmployee();
+                case inqMessages.addNewEmployee: createNewEmployee();
                     break;
 
-                case updateEmployee: updateCureentEmployee();
+                case inqMessages.updateEmployee: updateCureentEmployee();
                     break;
 
-                case updateRole: updateEmployeeRole();
+                case inqMessages.updateRole: updateEmployeeRole();
                     break;
 
-                case updateManager: updateEmployeeManager();
+                case inqMessages.updateManager: updateEmployeeManager();
                     break;
 
-                case viewAllRoles: viewAllAvailableRoles();
+                case inqMessages.viewAllRoles: viewAllAvailableRoles();
                     break;
 
-                default: exitApp();
+               //
+               
+             //  default: exitApp();
 
             }
         })
@@ -70,7 +76,7 @@ const init = function () {
             if (error.isTtyError) {
                 console.log(error)
             } else {
-                if (err) throw new err
+                if (error) throw error
             }
         })
 };
@@ -81,6 +87,7 @@ function findAllEmployees() {
     db.findAllEmployees()
         //place info
         .then(([rows]) => {
+            console.log("/n");
             let employees = rows;
             console.table(employees)
         })
@@ -122,11 +129,56 @@ function viewEmployeeDepartments() {
 //view employees according to their managers 
 function viewEmployeeByManager() {
     db.viewAllEmployees()
-    .then(([rows]) => {
-        let managers = rows;
-        const allManagers = managers.map(({ id, first_name, last_name, }) => ({
-            name: `${first_name, last_name}`,
-            value: id
-        }))
-    })
+        .then(([rows]) => {
+            let managers = rows;
+            const allManagers = managers.map(({ id, first_name, last_name, }) => ({
+                name: `${first_name}, ${last_name}`,
+                value: id
+            }));
+
+            inquirer.
+                prompt([
+                    {
+                        type: 'list',
+                        name: 'managerId',
+                        message: "Which manager's team would you like to see?",
+                        choices: allManagers
+                    }
+                ])
+                .then(res => db.findAllEmployeesByManager(res.managerId))
+                .then(([rows]) => {
+                    let employees = rows;
+                    console.log('/n');
+
+                    if (employees.length === 0) {
+                        console.log("There is no manager attached to this employee")
+                    } else {
+                        console.table(employees)
+                    }
+                })
+                .then(() => init())
+
+        });
+};
+
+function createNewEmployee() {
+    inquirer
+        .prompt([
+            {
+                name: 'firstName',
+                message: "Please enter the employee's first name"
+            },
+            {
+                name: 'lastName',
+                message: "Please enter the employee's last name"
+
+            }
+        ])
+        .then(res => {
+            let firstName = res.firstName;
+            let lastName = res.lastName;
+
+            
+        })
 }
+loadApp();
